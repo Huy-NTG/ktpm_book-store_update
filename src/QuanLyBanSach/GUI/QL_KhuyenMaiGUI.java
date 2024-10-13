@@ -36,6 +36,7 @@ import javax.swing.border.LineBorder;
 import com.toedter.calendar.JYearChooser;
 
 import MyCustom.MyDialog;
+import MyCustom.XulyInput;
 import QuanLyBanSach.BUS.CTKhuyenMaiBUS;
 import QuanLyBanSach.BUS.KhuyenMaiBUS;
 import QuanLyBanSach.DAO.MyConnect;
@@ -55,7 +56,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class QL_KhuyenMaiGUI extends JFrame {
-        
+        private XulyInput xulyinput;
 	private JPanel contentPane;
         JPanel panel_5;
 	private JTextField txt_MaKM;
@@ -293,6 +294,11 @@ public class QL_KhuyenMaiGUI extends JFrame {
 		txt_dieuKien.setColumns(10);
 		txt_dieuKien.setBounds(197, 136, 138, 27);
 		panel_5.add(txt_dieuKien);
+                
+                JLabel donvitien = new JLabel("VNĐ");
+		donvitien.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		donvitien.setBounds(340, 136, 40, 27);
+		panel_5.add(donvitien);
 		
 		JLabel lblNewLabel_2 = new JLabel("%");
 		lblNewLabel_2.setFont(new Font("Tahoma", Font.PLAIN, 15));
@@ -330,6 +336,7 @@ public class QL_KhuyenMaiGUI extends JFrame {
 		});
 		btn_ThemCTKM.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btn_ThemCTKM.setBounds(10, 33, 100, 32);
+                btn_ThemCTKM.setEnabled(false);
 		panel_3_1.add(btn_ThemCTKM);
 		
 		btn_SuaCTKM = new JButton("Sửa");
@@ -340,6 +347,7 @@ public class QL_KhuyenMaiGUI extends JFrame {
 		});
 		btn_SuaCTKM.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btn_SuaCTKM.setBounds(132, 33, 100, 32);
+                btn_SuaCTKM.setEnabled(false);
 		panel_3_1.add(btn_SuaCTKM);
 		
 		btn_XoaCTKM = new JButton("Xóa");
@@ -350,6 +358,7 @@ public class QL_KhuyenMaiGUI extends JFrame {
 		});
 		btn_XoaCTKM.setFont(new Font("Tahoma", Font.BOLD, 17));
 		btn_XoaCTKM.setBounds(255, 33, 100, 32);
+                btn_XoaCTKM.setEnabled(false);
 		panel_3_1.add(btn_XoaCTKM);
 		
 		JPanel panel_6 = new JPanel();
@@ -427,12 +436,12 @@ public class QL_KhuyenMaiGUI extends JFrame {
             vec.add(sdf.format(km.getNgayKT()));
 
             Date now = new Date();
-            if (km.getNgayBD().before(now) && km.getNgayKT().after(now)) {
-                vec.add("Đang diễn ra");
-            } else if(km.getNgayKT().before(now)) {
+            if (km.getNgayBD().after(now)) {
+                vec.add("Sớm bắt đầu");
+            } else if(km.getNgayKT().before(now) || km.getNgayKT().compareTo(now)==0) {
                 vec.add("Đã kết thúc");
             } else{
-                vec.add("Sớm bắt đầu");
+                vec.add("Đang bắt đầu");
             }
             model_KM.addRow(vec);
             tbl_KM.setModel(model_KM);
@@ -458,26 +467,27 @@ public class QL_KhuyenMaiGUI extends JFrame {
                 ngayKT = new SimpleDateFormat("dd/MM/yyyy").parse(end);
             } catch (Exception e) {
             }
+            tbl_CTKM.clearSelection();
             txt_MaKM.setEditable(false);
             txt_MaKM.setText(ma);
             txt_TenKM.setText(ten);          
             date_BĐ.setDate(ngayBD);
             date_KT.setDate(ngayKT);
             txt_MaKMCT.setText(ma);
+            btn_ThemKM.setEnabled(false);
+            btn_SuaCTKM.setEnabled(false);
+            btn_XoaCTKM.setEnabled(false);
             if(status.equals("Đang diễn ra") || status.equals("Đã kết thúc")){
                 btn_XoaKM.setEnabled(false);
                 btn_SuaKM.setEnabled(false);
                 btn_ThemCTKM.setEnabled(false);
-                btn_SuaCTKM.setEnabled(false);
-                btn_XoaCTKM.setEnabled(false);
             }
             else{
                 btn_XoaKM.setEnabled(true);
                 btn_SuaKM.setEnabled(true);
                 btn_ThemCTKM.setEnabled(true);
-                btn_SuaCTKM.setEnabled(true);
-                btn_XoaCTKM.setEnabled(true);
             }
+            loadingCTKhuyenMai(ma);
         }
 	}
 	private void themKhuyenMai() {
@@ -536,6 +546,12 @@ public class QL_KhuyenMaiGUI extends JFrame {
             txt_MaKMCT.setText("");
             txt_phanTram.setText("");
             txt_dieuKien.setText("");
+            btn_SuaCTKM.setEnabled(false);
+            btn_ThemCTKM.setEnabled(false);
+            btn_XoaCTKM.setEnabled(false);
+            btn_XoaKM.setEnabled(false);
+            btn_SuaKM.setEnabled(false);
+            btn_ThemKM.setEnabled(true);
             try {
                 date_BĐ.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(today.toString()));
             } catch (ParseException ex) {
@@ -547,6 +563,7 @@ public class QL_KhuyenMaiGUI extends JFrame {
                 Logger.getLogger(QL_NhapHang.class.getName()).log(Level.SEVERE, null, ex);
             }
             loadingKhuyenMai();
+            loadingCTKhuyenMai();
         }
 	private void loadingCTKhuyenMai() {
 		model_CTKM.setRowCount(0);
@@ -580,6 +597,42 @@ public class QL_KhuyenMaiGUI extends JFrame {
 			tbl_CTKM.getColumnModel().getColumn(x).setCellRenderer(centerRenderer);
 		}
 	}
+        private void loadingCTKhuyenMai(String maKM) {
+		model_CTKM.setRowCount(0);
+                setDataCTPN_Default();
+                txt_MaKMCT.setText(maKM);
+		CTKMBUS.docDanhSach();
+		ArrayList<CTKhuyenMai> dsctkm = CTKMBUS.getDanhSachKhuyenMai();
+		Vector header = new Vector();
+		header.add("Mã Khuyến mãi");
+		header.add("Mã SP");
+		header.add("Phần trăm giảm");
+		header.add("Điều Kiện Giảm");
+		if(model_CTKM.getRowCount() == 0)
+			model_CTKM = new DefaultTableModel(header,0){
+                            @Override
+                            public boolean isCellEditable(int row,int column){
+                                return false;
+                            }
+                        };
+		for( CTKhuyenMai i : dsctkm) {
+                    if(maKM.equals(i.getMaKM()+"")){
+                        Vector vec = new Vector();
+			vec.add(i.getMaKM());
+			vec.add(i.getMaSP());
+			vec.add(i.getPhanTramGiam());
+			vec.add(i.getDieuKien());
+			model_CTKM.addRow(vec);
+			tbl_CTKM.setModel(model_CTKM);
+                    }
+		}
+		// căn giữa
+		centerRenderer.setHorizontalAlignment(JLabel.CENTER);
+		for (int x = 0; x < tbl_CTKM.getColumnCount(); x++) {
+			tbl_CTKM.getColumnModel().getColumn(x).setCellRenderer(centerRenderer);
+		}
+	}
+        
 	private void clickTableCTKhuyenMai() {
 		int row = tbl_CTKM.getSelectedRow();
 		if(row > -1) {
@@ -592,11 +645,14 @@ public class QL_KhuyenMaiGUI extends JFrame {
                         cbx_sp.setSelectedIndex(Integer.parseInt(index1[0]));
 			txt_dieuKien.setText(dieukien);
 			txt_phanTram.setText(phantram);
+                        btn_ThemCTKM.setEnabled(false);
+                        btn_SuaCTKM.setEnabled(true);
+                        btn_XoaCTKM.setEnabled(true);
 		}
 	}
 	private void themCTKM() {
             String maSP=cbx_sp.getItemAt(cbx_sp.getSelectedIndex())+"";
-		boolean flag = CTKMBUS.themCTKhuyenMai(txt_MaKMCT.getText(),maSP,txt_phanTram.getText(), txt_dieuKien.getText());
+            boolean flag = CTKMBUS.themCTKhuyenMai(txt_MaKMCT.getText(),maSP,txt_phanTram.getText(), txt_dieuKien.getText());
 		if(flag) {
 			CTKMBUS.docDanhSach();
 			loadingCTKhuyenMai();

@@ -2,24 +2,34 @@ package QuanLyBanSach.BUS;
 
 import java.util.ArrayList;
 import java.util.Date;
-
+import java.time.LocalDate;
 import javax.swing.JOptionPane;
 
 import MyCustom.MyDialog;
 import QuanLyBanSach.DAO.KhuyenMaiDAO;
 import QuanLyBanSach.DTO.KhuyenMai;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class KhuyenMaiBUS {
-	private ArrayList<KhuyenMai> listKhuyenMai = null;
+    private ArrayList<KhuyenMai> listKhuyenMai = null;
     private KhuyenMaiDAO KMDAO = new KhuyenMaiDAO();
-
+    private LocalDate now=LocalDate.now();
+    private Date daynow;
     public KhuyenMaiBUS() {
         docDanhSach();
+        try {
+            daynow=new SimpleDateFormat("yyyy-MM-dd").parse(now.toString());
+        } catch (ParseException ex) {
+            Logger.getLogger(KhuyenMaiBUS.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void docDanhSach() {
         this.listKhuyenMai = KMDAO.getDanhSachKhuyenMai();
+        
     }
 
     public ArrayList<KhuyenMai> getDanhSachKhuyenMai() {
@@ -30,11 +40,17 @@ public class KhuyenMaiBUS {
 
     public boolean themKhuyenMai(String ten, Date ngayBD, Date ngayKT) {
         if (ten.equals("")) {
-            new MyDialog("Hãy nhập tên chương trình khuyến mãi!", MyDialog.ERROR_DIALOG);
+            new MyDialog("Không được để trống tên chương trình khuyến mãi!", MyDialog.ERROR_DIALOG);
             return false;
         }
+        
+        if (ngayBD.compareTo(daynow)<0|| ngayBD.compareTo(daynow) == 0) {
+            new MyDialog("Ngày bắt đầu phải lớn hơn ngày hiện tại", MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        
         if (ngayBD.compareTo(ngayKT) > 0 || ngayBD.compareTo(ngayKT) == 0) {
-            new MyDialog("Ngày kết thúc không hợp lệ!", MyDialog.ERROR_DIALOG);
+            new MyDialog("Ngày kết thúc phải lớn hơn ngày bắt đầu!", MyDialog.ERROR_DIALOG);
             return false;
         }
         boolean flag = false;
@@ -89,11 +105,17 @@ public class KhuyenMaiBUS {
             return false;
         }
         if (ten.equals("")) {
-            new MyDialog("Hãy nhập tên chương trình khuyến mãi!", MyDialog.ERROR_DIALOG);
+            new MyDialog("Không được để trống tên chương trình khuyến mãi!", MyDialog.ERROR_DIALOG);
             return false;
         }
+        Date nowday= new Date();
+        if (ngayBD.compareTo(nowday)<0|| ngayBD.compareTo(nowday) == 0) {
+            new MyDialog("Ngày bắt đầu phải lớn hơn ngày hiện tại", MyDialog.ERROR_DIALOG);
+            return false;
+        }
+        
         if (ngayBD.compareTo(ngayKT) > 0 || ngayBD.compareTo(ngayKT) == 0) {
-            new MyDialog("Ngày kết thúc không hợp lệ!", MyDialog.ERROR_DIALOG);
+            new MyDialog("Ngày kết thúc phải lớn hơn ngày bắt đầu!", MyDialog.ERROR_DIALOG);
             return false;
         }
         boolean flag = false;
@@ -107,7 +129,7 @@ public class KhuyenMaiBUS {
 
             flag = KMDAO.suaKhuyenMai(km);
         } catch (Exception e) {
-            new MyDialog("Hãy nhập số nguyên hợp lệ!", MyDialog.ERROR_DIALOG);
+            new MyDialog("Thông nhập chưa hợp lệ!", MyDialog.ERROR_DIALOG);
             return false;
         }
         if (flag) {
