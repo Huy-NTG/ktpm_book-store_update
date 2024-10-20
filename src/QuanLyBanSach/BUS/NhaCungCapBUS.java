@@ -20,14 +20,21 @@ public class NhaCungCapBUS {
     public void docDanhSach() {
         this.listNhaCungCap = nhaCungCapDAO.getListNhaCungCap();
     }
-
+    
     public ArrayList<NhaCungCap> getListNhaCungCap() {
         if (this.listNhaCungCap == null) {
             docDanhSach();
         }
         return this.listNhaCungCap;
     }
-
+    public String getTenNCC(String maNCC){
+        for(NhaCungCap ncc : listNhaCungCap){
+            if((ncc.getMaNCC()+"").equals(maNCC)){
+                return ncc.getTenNCC();
+            }
+        }
+        return "";
+    }
     public boolean themNhaCungCap(String tenNCC, String diaChi, String dienThoai) {
         if (tenNCC.trim().equals("")) {
             new MyDialog("Hãy nhập tên Nhà cung cấp này!", MyDialog.ERROR_DIALOG);

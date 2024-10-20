@@ -227,16 +227,11 @@ public class DLG_ThemSP extends JFrame {
         
     }
     private void themSP(){
-        // Kiểm tra chỉ mục được chọn trong các combobox 24/09/2024
-    if (cb_LoaiSP.getSelectedIndex() == 0 || cb_TG.getSelectedIndex() == 0) {
-        JOptionPane.showMessageDialog(null, "Vui lòng nhập lại mã tác giả hoặc tác phẩm!");
-        return; // Kết thúc phương thức nếu không hợp lệ
-    }
         spBUS.themSanPham(t_TenSP.getText(),cb_LoaiSP.getSelectedItem()+"",fileImageSP.getName(),cb_TG.getSelectedItem()+"",t_MoTa.getText());
     }
     
-    /*public static void main(String[]args){
+    public static void main(String[]args){
         new MyConnect();
         new DLG_ThemSP();
-    }*/
+    }
 }

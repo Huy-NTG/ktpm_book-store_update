@@ -3,7 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ADMIN/Desktop/hocki1_nam3/kiemThuPhanMem/kiemThuPhanMem_book-store/src/Main/Main.java</file>
+            <file>file:/D:/Tailieuhoctap/Source%20BookStore/BookStore_Source/src/QuanLyBanSach/GUI/dangnhap.java</file>
+            <file>file:/D:/Tailieuhoctap/Source%20BookStore/BookStore_Source/src/Main/Main.java</file>
+            <file>file:/D:/Tailieuhoctap/Source%20BookStore/BookStore_Source/src/QuanLyBanSach/BUS/DangNhapBUS.java</file>
+            <file>file:/D:/Tailieuhoctap/Source%20BookStore/BookStore_Source/src/MyCustom/XulyInput.java</file>
+            <file>file:/D:/Tailieuhoctap/Source%20BookStore/BookStore_Source/src/QuanLyBanSach/GUI/QL_SanPhamGUI.java</file>
+            <file>file:/D:/Tailieuhoctap/Source%20BookStore/BookStore_Source/src/QuanLyBanSach/GUI/QL_BanHang.java</file>
         </group>
     </open-files>
 </project-private>

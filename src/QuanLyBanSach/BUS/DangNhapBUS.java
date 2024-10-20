@@ -1,6 +1,7 @@
 package QuanLyBanSach.BUS;
 
 import MyCustom.MyDialog;
+import MyCustom.XulyInput;
 import QuanLyBanSach.DAO.DangNhapDAO;
 import QuanLyBanSach.DTO.PhanQuyen;
 import QuanLyBanSach.DTO.TaiKhoan;
@@ -13,10 +14,23 @@ public class DangNhapBUS {
     public static TaiKhoan taiKhoanLogin = null;
 
     public TaiKhoan getTaiKhoanDangNhap(String user, String password, boolean selected) {
-    	 if (user.equals("")||password.equals("")) {
-            new MyDialog("Không được để trống thông tin!", MyDialog.ERROR_DIALOG);
+    	 if (user.equals("")) {
+            new MyDialog("Tên đăng nhập không được để trống!", MyDialog.ERROR_DIALOG);
             return null;
-        }
+         }else if(user.length()<5 || user.length()>50){
+             new MyDialog("Tên đăng nhập không hợp lệ, tên đăng nhập phải có từ 5-50 kí tự!", MyDialog.ERROR_DIALOG);
+            return null;
+         }else if(!new XulyInput().khongkitudacbiet(user)){
+             new MyDialog("Tên đăng nhập không hợp lệ, tên đăng nhập không được chứa kí tự đặc biệt!", MyDialog.ERROR_DIALOG);
+            return null;
+         }
+         if (password.equals("")) {
+            new MyDialog("Mật khẩu không được để trống!", MyDialog.ERROR_DIALOG);
+            return null;
+         }else if(password.length()<5 || password.length()>50){
+             new MyDialog("Mật khẩu không hợp lệ, mật khẩu phải có từ 5-50 kí tự!", MyDialog.ERROR_DIALOG);
+            return null;
+         }
         TaiKhoan tk = new TaiKhoan();
         tk.setTenDangNhap(user);
         tk.setMatKhau(password);

@@ -89,7 +89,7 @@ public class QL_BanHang extends JFrame {
 	public  static JTextField txt_GiamGia ;//
 	int tongphantram=0, tongTien=0,tongTienSauKM=0;
 	private JButton btn_TimMaGG;
-	private JButton btn_ThanhToan ;
+	private JButton btn_ThanhToan, btn_TimHD ;
 	private JButton btn_tim;
 	private JButton btn_menu;
 	private JSpinner spi_soLuong;
@@ -512,11 +512,13 @@ public class QL_BanHang extends JFrame {
 		txt_TongTien.setBounds(405, 501, 187, 25);
 		panel_1.add(txt_TongTien);
 		txt_TongTien.setColumns(10);
+                txt_TongTien.setEnabled(false);
 		
 		txt_GiamGia = new JTextField();			
 		txt_GiamGia.setBounds(405, 566, 153, 25);
 		panel_1.add(txt_GiamGia);
 		txt_GiamGia.setColumns(10);
+                txt_GiamGia.setEnabled(false);
 		txt_GiamGia.getDocument().addDocumentListener(new DocumentListener() {		
 			@Override
 			public void removeUpdate(DocumentEvent e) {
@@ -575,6 +577,7 @@ public class QL_BanHang extends JFrame {
 		txt_tongTienKM = new JTextField();
 		txt_tongTienKM.setColumns(10);
 		txt_tongTienKM.setBounds(405, 530, 187, 25);
+                txt_tongTienKM.setEnabled(false);
 		panel_1.add(txt_tongTienKM);
 		
 		
@@ -683,15 +686,18 @@ public class QL_BanHang extends JFrame {
 		txt_maHD2.setBounds(80, 29, 261, 26);
 		panel_5.add(txt_maHD2);
 		txt_maHD2.setColumns(10);
+                txt_maHD2.setEnabled(false);
 		
 		txt_maKH2 = new JTextField();
 		txt_maKH2.setColumns(10);
 		txt_maKH2.setBounds(80, 65, 261, 26);
+                txt_maKH2.setEnabled(false);
 		panel_5.add(txt_maKH2);
 		
 		txt_NhanVien2 = new JTextField();
 		txt_NhanVien2.setColumns(10);
 		txt_NhanVien2.setBounds(133, 101, 208, 26);
+                txt_NhanVien2.setEnabled(false);
 		panel_5.add(txt_NhanVien2);
 		
 		JLabel lblNgyLp = new JLabel("Ngày Lập :");
@@ -712,16 +718,19 @@ public class QL_BanHang extends JFrame {
 		txt_NgayLap2 = new JTextField();
 		txt_NgayLap2.setColumns(10);
 		txt_NgayLap2.setBounds(471, 29, 208, 26);
+                txt_NgayLap2.setEnabled(false);
 		panel_5.add(txt_NgayLap2);
 		
 		txt_tongTien = new JTextField();
 		txt_tongTien.setColumns(10);
 		txt_tongTien.setBounds(473, 69, 206, 26);
+                txt_tongTien.setEnabled(false);
 		panel_5.add(txt_tongTien);
 		
 		txt_ghichu = new JTextField();
 		txt_ghichu.setColumns(10);
 		txt_ghichu.setBounds(471, 105, 208, 26);
+                txt_ghichu.setEnabled(false);
 		panel_5.add(txt_ghichu);
 		
 		JLabel lblGiT = new JLabel("Từ :");
@@ -746,7 +755,7 @@ public class QL_BanHang extends JFrame {
                 txt_Max.setEnabled(false);
 		panel_5.add(txt_Max);
 		
-		JButton btn_TimHD = new JButton("Tìm");
+		btn_TimHD = new JButton("Tìm");
                 btn_TimHD.setFont(new Font("Tahoma",Font.PLAIN,18));
 		btn_TimHD.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -754,6 +763,7 @@ public class QL_BanHang extends JFrame {
 			}
 		});
 		btn_TimHD.setBounds(325, 230, 85, 25);
+                btn_TimHD.setEnabled(false);
 		panel_5.add(btn_TimHD);
 		
 		cbx_timkiem = new JComboBox();
@@ -1567,6 +1577,7 @@ public class QL_BanHang extends JFrame {
         }
         private void cbx_method_find(){
             if(cbx_timkiem.getSelectedItem().equals("All")){
+                btn_TimHD.setEnabled(false);
                 txt_Min.setVisible(true);
                 txt_Max.setVisible(true);
                 txt_Min.setEnabled(false);
@@ -1577,6 +1588,7 @@ public class QL_BanHang extends JFrame {
                 lb_VND2.setVisible(false);
                 loadingHoaDon();
             }else if(cbx_timkiem.getSelectedItem().equals("Theo giá")){
+                btn_TimHD.setEnabled(true);
                 txt_Min.setVisible(true);
                 txt_Max.setVisible(true);
                 txt_Min.setEnabled(true);
@@ -1586,6 +1598,7 @@ public class QL_BanHang extends JFrame {
                 lb_VND1.setVisible(true);
                 lb_VND2.setVisible(true);
             }else{
+                btn_TimHD.setEnabled(true);
                 txt_Min.setVisible(false);
                 txt_Max.setVisible(false);
                 ngay_BD_find.setVisible(true);

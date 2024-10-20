@@ -96,7 +96,7 @@ public class QL_NhapHang extends JFrame {
 	private JTextField txt_thanhTienCT;
 	private JSpinner spi_soLuong;
 	private int tongTien=0;
-	private JButton btnNewButton;
+	private JButton btnNewButton, btn_chon;
         private DLG_ThemSP dlg_themSP;
         private JLabel lb_VND1, lb_VND2;
         private LocalDate today=LocalDate.now();
@@ -285,7 +285,7 @@ public class QL_NhapHang extends JFrame {
 		txt_timKiem.setBounds(221, 238, 237, 31);
 		panel_3.add(txt_timKiem);
 		
-		JButton btn_chon = new JButton("Chọn Nhập");
+		btn_chon = new JButton("Chọn nhập");
 		btn_chon.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chonSanPhamNhap();
@@ -293,10 +293,11 @@ public class QL_NhapHang extends JFrame {
 		});
 		btn_chon.setFont(new Font("Tahoma", Font.BOLD, 20));
 		btn_chon.setBounds(235, 120, 159, 39);
+                btn_chon.setEnabled(false);
 		panel_3.add(btn_chon);
                 
                 //Hien thi nut Refresh
-                JButton btn_Refresh = new JButton("Refresh");
+                JButton btn_Refresh = new JButton("Bỏ chọn");
                 btn_Refresh.setFont(new Font("Tahoma",Font.BOLD,18));
                 btn_Refresh.setBounds(400, 180, 150, 30);
                 panel_3.add(btn_Refresh);
@@ -416,6 +417,7 @@ public class QL_NhapHang extends JFrame {
 		txt_NCC.setHorizontalAlignment(SwingConstants.CENTER);
 		txt_NCC.setColumns(10);
 		txt_NCC.setBounds(193, 80, 202, 31);
+                txt_NCC.setEnabled(false);
 		panel_5.add(txt_NCC);
 		
 		JButton btn_timNCC = new JButton("Tìm");
@@ -439,6 +441,7 @@ public class QL_NhapHang extends JFrame {
 		txt_tongTien.setHorizontalAlignment(SwingConstants.CENTER);
 		txt_tongTien.setColumns(10);
 		txt_tongTien.setBounds(193, 137, 202, 31);
+                txt_tongTien.setEnabled(false);
 		panel_5.add(txt_tongTien);
 		
 		JLabel lblNewLabel_5 = new JLabel("VNĐ");
@@ -761,7 +764,7 @@ public class QL_NhapHang extends JFrame {
 		lblNewLabel_4_4_4.setBounds(131, 213, 116, 27);
 		panel_7.add(lblNewLabel_4_4_4);
 		
-		btnNewButton = new JButton("Refresh");
+		btnNewButton = new JButton("Làm mới");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				loadingCTPhieuNhap();
@@ -822,7 +825,8 @@ public class QL_NhapHang extends JFrame {
             //lấy dữ liệu lên textfiled           
             txt_maSP.setText(ma);
             txt_tenSP.setText(ten);
-            txt_donGia.setText("");
+            txt_donGia.setText("0");
+            btn_chon.setEnabled(true);
         }
 	}
 	private void liveSearch() {
@@ -859,8 +863,31 @@ public class QL_NhapHang extends JFrame {
         
         String ma = txt_maSP.getText();      
         SanPham sp= spBUS.getSanPham(ma);       
-        int soLuong = Integer.parseInt(spi_soLuong.getValue() + "");        
-        int giaNhap = Integer.parseInt(txt_donGia.getText());
+        int soLuong = Integer.parseInt(spi_soLuong.getValue() + "");
+        if(soLuong>500){
+            new MyDialog("Số lượng quá lớn, số lương tối đa là 500. Vui lòng xem xét lại!",MyDialog.ERROR_DIALOG);
+            return;
+        }
+        int giaNhap;
+        String temp=txt_donGia.getText();
+        if(temp.equals("")){
+            new MyDialog("Đơn giá không được để trống, vui lòng nhập!",MyDialog.ERROR_DIALOG);
+            return;
+        }
+        try{
+            giaNhap = Integer.parseInt(temp);
+            if(giaNhap<1000){
+                new MyDialog("Đơn giá quá nhỏ, vui lòng xem xét lại!",MyDialog.ERROR_DIALOG);
+                return;
+            }else if(giaNhap>10000000){
+                new MyDialog("Đơn giá quá lớn, vui lòng xem xét lại!",MyDialog.ERROR_DIALOG);
+                return;
+            }
+        }catch(NumberFormatException e){
+            new MyDialog("Đơn giá chỉ được nhập số, vui lòng nhập lại!",MyDialog.ERROR_DIALOG);
+            return;
+        }
+
     
         Vector header = new Vector();
         header.add("Mã SP ");
@@ -969,24 +996,29 @@ public class QL_NhapHang extends JFrame {
                 header.add("Đơn giá");
                 header.add("Thành Tiền");
         
-        if (model_CTPN.getRowCount()==0){ 
+            if (model_CTPN.getRowCount()==0){ 
         	model_CTPN=new DefaultTableModel(header,0){
                     @Override
                     public boolean isCellEditable(int row,int column){
                         return false;
                     }
                 };
-        } 
-		for( CTPhieuNhap pn : dspn) {
-		        Vector row = new Vector();
-		        row.add(pn.getMaPN());
-		        row.add(pn.getMaSP());		      
-		        row.add(pn.getSoLuong());	
-		        row.add(pn.getDonGia());		      
-		        row.add(pn.getThanhTien());	
-		        model_CTPN.addRow(row); 
-		        tbl_CTPN.setModel(model_CTPN);
-		}
+            } 
+            for( CTPhieuNhap pn : dspn) {
+                Vector row = new Vector();
+                row.add(pn.getMaPN());
+                row.add(pn.getMaSP());		      
+		row.add(pn.getSoLuong());	
+		row.add(pn.getDonGia());		      
+		row.add(pn.getThanhTien());	
+		model_CTPN.addRow(row); 
+		tbl_CTPN.setModel(model_CTPN);
+            }
+            txt_maPNCT.setText("");
+            txt_maSPCT.setText("");
+            txt_soluongCT.setText("");
+            txt_donGiaCT.setText("");
+            txt_thanhTienCT.setText("");
 	}
 	private void clickTablePhieuNhap() {
 		int row = tbl_PN.getSelectedRow();
@@ -1171,6 +1203,7 @@ public class QL_NhapHang extends JFrame {
             txt_tenSP.setText("");
             txt_donGia.setText("0");
             spi_soLuong.setValue(1);
+            btn_chon.setEnabled(false);
             loadingKhoHang();
         }    
 	private void nhapHang() {

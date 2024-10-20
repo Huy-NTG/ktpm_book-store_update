@@ -118,8 +118,8 @@ public class dangnhap extends JFrame {
     }
 	private void xuLyDangNhap() {
         DangNhapBUS dangNhapBUS = new DangNhapBUS();
-	String password="";
-	for(char a : txt_matkhau.getPassword()) password+=a;
+        String password="";
+        for(char a: txt_matkhau.getPassword()) password+=a;
         TaiKhoan tk = dangNhapBUS.getTaiKhoanDangNhap(txt_taikhoan.getText(),
                 password, check_ghinho.isSelected());
         if (tk != null) {

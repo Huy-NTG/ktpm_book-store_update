@@ -75,25 +75,22 @@ public class PhieuNhapBUS {
         return null;
     }
 
-    public ArrayList<PhieuNhap> getListPhieuNhapTheoNgay(String tuNgay, String denNgay) {
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyy");
-            
-            Date min = sdf.parse(tuNgay);
-            Date max = sdf.parse(denNgay);
-            if (max.before(min)) {
-                new MyDialog("Hãy nhập khoảng ngày phù hợp!", MyDialog.ERROR_DIALOG);
+    public ArrayList<PhieuNhap> getListPhieuNhapTheoNgay(Date tuNgay, Date denNgay) {
+            if (denNgay.before(tuNgay)) {
+                new MyDialog("Vui lòng nhập khoảng ngày phù hợp, ngày bắt đầu <= ngày kết thúc!", MyDialog.ERROR_DIALOG);
                 return null;
             }
+            docDanhSach();
+        try {
             ArrayList<PhieuNhap> result = new ArrayList<>();
             for (PhieuNhap pn : listPhieuNhap) {
-                if (pn.getNgayLap().after(min) && pn.getNgayLap().before(max)) {
+                if (pn.getNgayLap().after(tuNgay) && pn.getNgayLap().before(denNgay)) {
                     result.add(pn);
                 }
             }
             return result;
         } catch (Exception e) {
-            new MyDialog("Hãy nhập ngày hợp lệ (dd/MM/yyy)!", MyDialog.ERROR_DIALOG);
+            new MyDialog("Hãy nhập ngày hợp lệ (dd/MM/yyyy)!", MyDialog.ERROR_DIALOG);
         }
         return null;
     }

@@ -48,7 +48,7 @@ public class HoaDonBUS {
         try {
             int minPrice = Integer.parseInt(min);
             int maxPrice = Integer.parseInt(max);
-            if (minPrice < maxPrice) {
+            if (minPrice > maxPrice) {
                 new MyDialog("Hãy nhập khoảng giá phù hợp!", MyDialog.ERROR_DIALOG);
                 return null;
             }

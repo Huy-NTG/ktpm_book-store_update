@@ -49,13 +49,12 @@ public class TacGiaDao {
         return tg;
     }
 
-    public boolean themTG(TacGia tg) {
+    public boolean themTG(String tg) {
         boolean result = false;
         try {
-            String sql = "INSERT INTO tacgia VALUES(?, ?)";
+            String sql = "INSERT INTO tacgia VALUES( ?)";
             PreparedStatement prep = MyConnect.conn.prepareStatement(sql);
-            prep.setInt(1, tg.getMaTG());
-            prep.setString(2, tg.getTenTG());
+            prep.setString(2, tg);
             result = prep.executeUpdate() > 0;
         } catch (SQLException ex) {
             return false;

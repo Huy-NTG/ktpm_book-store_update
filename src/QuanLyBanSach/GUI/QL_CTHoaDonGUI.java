@@ -69,7 +69,7 @@ public class QL_CTHoaDonGUI extends JFrame {
 		
 		JPanel panel_1 = new JPanel();
 		panel_1.setBackground(Color.LIGHT_GRAY);
-		panel_1.setBorder(new TitledBorder(null, "Th\u00F4ng tin kh\u00E1ch h\u00E0ng", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+		panel_1.setBorder(new TitledBorder(null, "Thông tin khách hàng", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 		panel_1.setBounds(10, 37, 502, 154);
 		panel.add(panel_1);
 		panel_1.setLayout(null);
@@ -113,6 +113,7 @@ public class QL_CTHoaDonGUI extends JFrame {
 		textField = new JTextField();
 		textField.setFont(new Font("Times New Roman", Font.BOLD, 12));
 		textField.setBounds(110, 23, 96, 19);
+                textField.setEditable(false);
 		panel_1.add(textField);
 		textField.setColumns(10);
 		
@@ -120,30 +121,35 @@ public class QL_CTHoaDonGUI extends JFrame {
 		textField_1.setFont(new Font("Times New Roman", Font.BOLD, 12));
 		textField_1.setColumns(10);
 		textField_1.setBounds(110, 46, 96, 19);
+                textField_1.setEditable(false);
 		panel_1.add(textField_1);
 		
 		textField_2 = new JTextField();
 		textField_2.setFont(new Font("Times New Roman", Font.BOLD, 12));
 		textField_2.setColumns(10);
 		textField_2.setBounds(110, 69, 96, 19);
+                textField_2.setEditable(false);
 		panel_1.add(textField_2);
 		
 		textField_3 = new JTextField();
 		textField_3.setFont(new Font("Times New Roman", Font.BOLD, 12));
 		textField_3.setColumns(10);
 		textField_3.setBounds(369, 23, 96, 19);
+                textField_3.setEditable(false);
 		panel_1.add(textField_3);
 		
 		textField_4 = new JTextField();
 		textField_4.setFont(new Font("Times New Roman", Font.BOLD, 12));
 		textField_4.setColumns(10);
 		textField_4.setBounds(369, 46, 96, 19);
+                textField_4.setEditable(false);
 		panel_1.add(textField_4);
 		
 		textField_5 = new JTextField();
 		textField_5.setFont(new Font("Times New Roman", Font.BOLD, 12));
 		textField_5.setColumns(10);
 		textField_5.setBounds(369, 69, 96, 19);
+                textField_5.setEditable(false);
 		panel_1.add(textField_5);
 		
 		JLabel lblNewLabel = new JLabel("CHI TIẾT HÓA ĐƠN");
@@ -154,7 +160,7 @@ public class QL_CTHoaDonGUI extends JFrame {
 		
 		JPanel panel_2 = new JPanel();
 		panel_2.setBackground(new Color(192, 192, 192));
-		panel_2.setBorder(new TitledBorder(null, "Chi ti\u1EBFt s\u1EA3n ph\u1EA9m", TitledBorder.LEADING, TitledBorder.TOP, null, Color.BLACK));
+		panel_2.setBorder(new TitledBorder(null, "Chi tiết sản phẩm", TitledBorder.LEADING, TitledBorder.TOP, null, Color.BLACK));
 		panel_2.setBounds(10, 201, 502, 185);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
@@ -174,7 +180,7 @@ public class QL_CTHoaDonGUI extends JFrame {
 				{null, null, null, null},
 			},
 			new String[] {
-				"T\u00EAn S\u1EA3n Ph\u1EA9m", "S\u1ED1 L\u01B0\u1EE3ng", "\u0110\u01A1n gi\u00E1", "Th\u00E0nh ti\u1EC1n"
+				"Tên sản phẩm", "Số lượng", "Đơn giá", "Thành tiền"
 			}
 		));
 		scrollPane.setViewportView(table);

@@ -41,6 +41,14 @@ public class XulyInput {
         return true;
     }
     
+    public boolean khongkitudacbiet(String x){
+        for(char r: x.toCharArray()){
+            if(isSpecialCharacter(r)){
+                return false;
+            }
+        }
+        return true;
+    }
     
     private void checkText(String text){
         for(char r : text.toCharArray()){

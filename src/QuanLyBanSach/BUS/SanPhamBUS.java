@@ -31,7 +31,7 @@ public class SanPhamBUS {
     }
 
     public SanPham getSanPham(String ma) {
-        if (!ma.trim().isEmpty() || ma.matches("[a-zA-Z]+")) {
+        if (!ma.trim().equals("")) {
             try {
                 int maSP = Integer.parseInt(ma);
                 for (SanPham sp : listSanPham) {
@@ -40,7 +40,6 @@ public class SanPhamBUS {
                     }
                 }
             } catch (Exception e) {
-                 JOptionPane.showMessageDialog(null, "Mã sản phẩm không hợp lệ!");
             }
         }
         return null;
@@ -61,15 +60,15 @@ public class SanPhamBUS {
         ArrayList<SanPham> dssp = new ArrayList<>();
         gia1=gia1.trim();
         gia2=gia2.trim();
-        if(gia1.matches("[a-zA-Z]+") || gia2.matches("[a-zA-Z]+")){
-             JOptionPane.showMessageDialog(null, "Giá sản phẩm không hợp lệ!");
-            return dssp;
-        }
         int so1;
         int so2;
         try {
             so1=Integer.parseInt(gia1);
             so2=Integer.parseInt(gia2);
+            if(so1>=so2){
+                JOptionPane.showMessageDialog(null, "Khoảng giá không hợp lệ, khoảng giá trước phải nhỏ hơn khoảng giá sau!");
+                return null;
+            }
             for (SanPham sp : listSanPham) {
             if (sp.getDonGia()>=so1 && sp.getDonGia()<=so2) {
                 dssp.add(sp);
@@ -134,10 +133,13 @@ public class SanPhamBUS {
     		String mota) {
 
         if (ten.trim().equals("")) {
-        	JOptionPane.showMessageDialog(null, "Vui lòng nhập tên sách!");
+            JOptionPane.showMessageDialog(null, "Tên sách đang bị bỏ trống, vui lòng nhập tên sách!");
+            return false;
+        }else if(ten.length()>150){
+            JOptionPane.showMessageDialog(null, "Tên sách quá dài, vui lòng nhập ngắn lại!");
             return false;
         }
-   
+       
         try {
             String[] loaiTmp = loai.split(" - ");
             int maLoai = Integer.parseInt(loaiTmp[0]);
@@ -145,10 +147,6 @@ public class SanPhamBUS {
             int maTG = Integer.parseInt(tgTmp[0]);
             if (maLoai == 0) {
             	JOptionPane.showMessageDialog(null, "Vui lòng nhập lại mã loại sản phẩm !");
-                return false;
-            }
-             if (maTG == 0) {
-            	JOptionPane.showMessageDialog(null, "Vui lòng nhập lại mã tác giả !");
                 return false;
             }
             SanPham sp = new SanPham();
@@ -255,7 +253,7 @@ public class SanPhamBUS {
 
     public boolean xoaSanPham(String ma) {
         if (ma.trim().equals("")) {
-        	JOptionPane.showMessageDialog(null, "Mã sản phẩm không đc để trống !");
+        	JOptionPane.showMessageDialog(null, "Mã sản phẩm không được để trống !");
             return false;
         }
 
@@ -281,7 +279,7 @@ public class SanPhamBUS {
             if (ma.trim().equals("")) {
             	JOptionPane.showMessageDialog(null, "Mã sản phẩm không đc để trống !");
                 return false;
-            }          
+            }         
             int maSP = Integer.parseInt(ma);
             String[] loaiTmp = loai.split(" - ");
             int maLoai = Integer.parseInt(loaiTmp[0]);
@@ -289,13 +287,11 @@ public class SanPhamBUS {
             int maTG = Integer.parseInt(loaiTmp[0]);
             int donGiaSP = Integer.parseInt(donGia);
 
-            if (maLoai == 0) {
-            	JOptionPane.showMessageDialog(null, "Nhập sai mã sản phẩm !");
-                return false;
-            }
-
             if (ten.trim().equals("")) {
-            	JOptionPane.showMessageDialog(null, "Tên sản phẩm không được để trống !");
+            	JOptionPane.showMessageDialog(null, "Tên sản phẩm không được để trống!");
+                return false;
+            } else if(ten.length()>150){
+                JOptionPane.showMessageDialog(null, "Tên sản phẩm quá dài, vui lòng nhập ngắn lại!");
                 return false;
             }
            

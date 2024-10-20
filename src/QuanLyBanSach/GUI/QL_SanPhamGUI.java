@@ -396,9 +396,14 @@ public class QL_SanPhamGUI extends JFrame {
 		lblNewLabel_2.setBounds(458, 192, 32, 13);
 		panel_2.add(lblNewLabel_2);
 		
+                JScrollPane sc_mota= new JScrollPane();
+                sc_mota.setBounds(328, 264, 162, 50);
 		txt_Mota = new JTextArea();
-		txt_Mota.setBounds(328, 264, 162, 50);
-		panel_2.add(txt_Mota);
+		//txt_Mota.setSize(162, 50);
+                txt_Mota.setLineWrap(true);
+                txt_Mota.setWrapStyleWord(true);
+                sc_mota.setViewportView(txt_Mota);
+		panel_2.add(sc_mota);
 		
 		btn_themHinhAnh = new JButton("Chọn file ảnh");
 		btn_themHinhAnh.setHorizontalAlignment(SwingConstants.LEFT);
@@ -411,10 +416,12 @@ public class QL_SanPhamGUI extends JFrame {
 		
 		btn_SuaSP = new JButton("Sữa");
 		btn_SuaSP.setBounds(115, 334, 85, 21);
+                btn_SuaSP.setEnabled(false);
 		panel_2.add(btn_SuaSP);
 		
 		btn_XoaSP = new JButton("Xóa");
 		btn_XoaSP.setBounds(212, 334, 85, 21);
+                btn_XoaSP.setEnabled(false);
 		panel_2.add(btn_XoaSP);
 		
                 btn_ClearSP = new JButton("Clear");
@@ -736,16 +743,26 @@ public class QL_SanPhamGUI extends JFrame {
     private void findSP(){
         switch(cbx_find.getSelectedIndex()){
             case 1 ->{
+                String maSP=txt_nhap_find.getText();
+                if(maSP==null || maSP.equals("")){
+                    new MyDialog("Vui lòng nhập mã SP cần tìm!",MyDialog.ERROR_DIALOG);
+                    return;
+                }
                 model_SP.setRowCount(0);
-                SanPham sp=spBUS.getSanPham(txt_nhap_find.getText());
+                SanPham sp=spBUS.getSanPham(maSP);
                 model_SP.addRow(new Object[]{sp.getMaSP(),sp.getTenSP(),sp.getSoLuong(),sp.getDonGia(),
                     sp.getMaLoai(),sp.getHinhAnh(),sp.getMaTG(),sp.getMoTa()});
                 table_SP.setModel(model_SP);
                 break;
             }
             case 2 ->{
+                String tenSP=txt_nhap_find.getText();
+                if(tenSP==null || tenSP.equals("")){
+                    new MyDialog("Vui lòng nhập tên SP cần tìm!",MyDialog.ERROR_DIALOG);
+                    return;
+                }
                 model_SP.setRowCount(0);
-                for(SanPham sp:spBUS.getSanPhamTheoTen(txt_nhap_find.getText())){
+                for(SanPham sp:spBUS.getSanPhamTheoTen(tenSP)){
                     model_SP.addRow(new Object[]{sp.getMaSP(),sp.getTenSP(),sp.getSoLuong(),sp.getDonGia(),
                     sp.getMaLoai(),sp.getHinhAnh(),sp.getMaTG(),sp.getMoTa()});
                 }
@@ -753,8 +770,14 @@ public class QL_SanPhamGUI extends JFrame {
                 break;
             }
             case 3 ->{
+                String giatien1=txt_giatien1.getText();
+                String giatien2=txt_giatien2.getText();
+                if(giatien1==null || giatien2==null || giatien1.equals("")||giatien2.equals("")){
+                    new MyDialog("Vui lòng nhập khoảng giá sản phẩm cần tìm!",MyDialog.ERROR_DIALOG);
+                    return;
+                }
                 model_SP.setRowCount(0);
-                for(SanPham sp:spBUS.getSanPhamDonGia(txt_giatien1.getText(),txt_giatien2.getText())){
+                for(SanPham sp:spBUS.getSanPhamDonGia(giatien1,giatien2)){
                     model_SP.addRow(new Object[]{sp.getMaSP(),sp.getTenSP(),sp.getSoLuong(),sp.getDonGia(),
                     sp.getMaLoai(),sp.getHinhAnh(),sp.getMaTG(),sp.getMoTa()});
                 }
@@ -1097,13 +1120,13 @@ public class QL_SanPhamGUI extends JFrame {
 
             // Kiểm tra xem có chọn index 0 trong combobox loại không
             if (checkComBoBox1Index == 0) {
-                JOptionPane.showMessageDialog(null, "Vui lòng nhập lại mã loại sản phẩm!");
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn mã loại sản phẩm!");
                 return; // Kết thúc phương thức nếu không hợp lệ
             }
 
             // Kiểm tra xem có chọn index 0 trong combobox tác giả không
             if (checkComBoBox2Index == 0) {
-                JOptionPane.showMessageDialog(null, "Vui lòng nhập lại mã tác giả!");
+                JOptionPane.showMessageDialog(null, "Vui lòng chọn mã tác giả!");
                 return; // Kết thúc phương thức nếu không hợp lệ
             }
         String comboBox1 = "" + cbx_loai.getItemAt(cbx_loai.getSelectedIndex());
@@ -1183,6 +1206,9 @@ public class QL_SanPhamGUI extends JFrame {
         }
     }
     private void clearSP(){
+        btn_ThemSP.setEnabled(true);
+        btn_XoaSP.setEnabled(false);
+        btn_SuaSP.setEnabled(false);
         txt_MaSP.setText("");
         txt_TenSP.setText("");
         txt_Mota.setText("");
@@ -1240,6 +1266,9 @@ public class QL_SanPhamGUI extends JFrame {
             cbx_tg.setSelectedIndex(Integer.parseInt(index2[0]));
             cbx_tg.setEnabled(false);
             loadAnh("Image/" + anh);
+            btn_ThemSP.setEnabled(false);
+            btn_XoaSP.setEnabled(true);
+            btn_SuaSP.setEnabled(true);
         }
     }
     private void locSPTheoLoai() {

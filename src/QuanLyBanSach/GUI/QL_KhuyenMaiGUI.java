@@ -160,7 +160,7 @@ public class QL_KhuyenMaiGUI extends JFrame {
 		panel_2.add(date_BĐ);
                 
             try {
-                date_BĐ.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(today.toString()));
+                date_BĐ.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(today.plusDays(1).toString()));
             } catch (ParseException ex) {
                 Logger.getLogger(QL_NhapHang.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -173,7 +173,7 @@ public class QL_KhuyenMaiGUI extends JFrame {
 		panel_2.add(date_KT);
 		
             try {
-                date_KT.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(today.plusDays(1).toString()));
+                date_KT.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(today.plusDays(2).toString()));
             } catch (ParseException ex) {
                 Logger.getLogger(QL_NhapHang.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -553,12 +553,12 @@ public class QL_KhuyenMaiGUI extends JFrame {
             btn_SuaKM.setEnabled(false);
             btn_ThemKM.setEnabled(true);
             try {
-                date_BĐ.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(today.toString()));
+                date_BĐ.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(today.plusDays(1).toString()));
             } catch (ParseException ex) {
                 Logger.getLogger(QL_NhapHang.class.getName()).log(Level.SEVERE, null, ex);
             }
             try {
-                date_KT.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(today.plusDays(1).toString()));
+                date_KT.setDate(new SimpleDateFormat("yyyy-MM-dd").parse(today.plusDays(2).toString()));
             } catch (ParseException ex) {
                 Logger.getLogger(QL_NhapHang.class.getName()).log(Level.SEVERE, null, ex);
             }

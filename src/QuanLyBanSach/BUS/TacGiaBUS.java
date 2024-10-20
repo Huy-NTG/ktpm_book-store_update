@@ -35,20 +35,18 @@ public class TacGiaBUS {
 		return "";
 	}
 
-	public boolean themTG(String maTG, String tenTG) {
-		if (maTG.trim().equals("") || tenTG.trim().equals("")) {			
-			JOptionPane.showMessageDialog(null, "Không được để trống thông tin !");
+	public boolean themTG( String tenTG) {
+		if (tenTG.trim().equals("")) {			
+			JOptionPane.showMessageDialog(null, "Không được để trống tên tác giả !");
 			return false;
 		}
 		for(TacGia tg : listTG) {
-			if(String.valueOf(tg.getMaTG()).equals(maTG)) {
-				JOptionPane.showMessageDialog(null, "Mã tác giả đã tồn tại !");
+			if(String.valueOf(tg.getTenTG()).equals(tenTG)) {
+				JOptionPane.showMessageDialog(null, "Tên tác giả đã tồn tại, vui lòng kiểm tra lại!");
 				return false;
 			}
 		}
-		int matacgia = Integer.parseInt(maTG);
-		TacGia tg = new TacGia(matacgia, tenTG);
-		if (tacGiaDao.themTG(tg)) {
+		if (tacGiaDao.themTG(tenTG)) {
 			JOptionPane.showMessageDialog(null, "Thêm thành công !");
 			return true;
 		} else {
